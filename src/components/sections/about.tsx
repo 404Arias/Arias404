@@ -34,10 +34,14 @@ const TimelineItem = ({
         <Card className="hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-lg">
-              {type === "experience" ? (item as Experience).title : (item as Education).degree}
+              {type === "experience"
+                ? (item as Experience).title
+                : (item as Education).degree}
             </CardTitle>
             <p className="text-primary font-medium">
-              {type === "experience" ? (item as Experience).company : (item as Education).school}
+              {type === "experience"
+                ? (item as Experience).company
+                : (item as Education).school}
             </p>
             <p className="text-sm text-muted-foreground flex items-center">
               <Calendar className="w-4 h-4 mr-2" />
@@ -149,8 +153,8 @@ export function About() {
 
                 <div className="mt-6 p-4 bg-primary/10 rounded-lg">
                   <p className="text-sm text-center">
-                    &quot;El código es poesía en movimiento, y cada proyecto es una
-                    oportunidad de crear algo extraordinario.&quot;
+                    &quot;El código es poesía en movimiento, y cada proyecto es
+                    una oportunidad de crear algo extraordinario.&quot;
                   </p>
                 </div>
               </CardContent>
