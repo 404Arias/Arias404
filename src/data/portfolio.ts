@@ -72,7 +72,7 @@ export const education: Education[] = [
   },
   {
     id: "3",
-    degree: "Full Stack Web Development",
+    degree: "BootCamp Full Stack Web Developer",
     school: "FullStackOpen - University of Helsinki",
     period: "2025",
     description:

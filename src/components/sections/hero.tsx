@@ -32,13 +32,13 @@ const TypingAnimation = ({
   }, [currentIndex, text, delay]);
 
   return (
-    <span className="inline-block">
+    <span className="inline-block font-bold">
       {displayedText}
       {currentIndex < text.length && (
         <motion.span
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 0.8, repeat: Infinity }}
-          className="inline-block w-0.5 h-8 bg-primary ml-1"
+          className="inline-block w-0.5 h-6 md:h-8 bg-primary ml-1"
         />
       )}
     </span>
@@ -177,14 +177,14 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-6"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               Hola, soy{" "}
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="text-primary" style={{ color: '#6366f1' }}>
                 <TypingAnimation text={personalInfo.name} delay={1000} />
               </span>
             </h1>
 
-            <h2 className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-4">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-4">
               <TypingAnimation text={personalInfo.title} delay={2500} />
             </h2>
 
