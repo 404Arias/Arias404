@@ -31,13 +31,13 @@ export const projects: Project[] = [
   },
   {
     id: "3",
-    title: "Weather Analytics",
+    title: "WitheList Page",
     description:
       "Dashboard de análisis meteorológico con visualizaciones interactivas y predicciones basadas en ML.",
-    image: "/images/project3.jpg",
-    technologies: ["Vue.js", "D3.js", "Python", "FastAPI", "TensorFlow"],
-    githubUrl: "https://github.com/usuario/weather-analytics",
-    liveUrl: "https://weather-analytics.vercel.app",
+    image: "/images/WhiteList.png",
+    technologies: ["Next.js", "Tailwind", "Prisma", "PostgreSQL"],
+    githubUrl: "https://github.com/404arias",
+    liveUrl: "https://white-list-page.vercel.app/",
   },
 ];
 
