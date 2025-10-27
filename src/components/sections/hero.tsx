@@ -25,7 +25,7 @@ const TypingAnimation = ({
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + text[currentIndex]);
         setCurrentIndex((prev) => prev + 1);
-      }, 100 + delay);
+      }, 50 + delay);
 
       return () => clearTimeout(timeout);
     }
@@ -179,13 +179,13 @@ export function Hero() {
           >
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               Hola, soy{" "}
-              <span className="text-primary" style={{ color: '#6366f1' }}>
+              <span className="text-primary" style={{ color: "#6366f1" }}>
                 <TypingAnimation text={personalInfo.name} delay={1000} />
               </span>
             </h1>
 
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-4">
-              <TypingAnimation text={personalInfo.title} delay={2500} />
+              <TypingAnimation text={personalInfo.title} delay={1500} />
             </h2>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-2">
@@ -248,7 +248,9 @@ export function Hero() {
               >
                 {social.icon === "github" && <Github className="h-8 w-8" />}
                 {social.icon === "linkedin" && <Linkedin className="h-8 w-8" />}
-                {social.icon === "instagram" && <Instagram className="h-8 w-8" />}
+                {social.icon === "instagram" && (
+                  <Instagram className="h-8 w-8" />
+                )}
               </motion.a>
             ))}
           </motion.div>

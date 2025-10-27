@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, Eye, Filter } from "lucide-react";
+import { ExternalLink, Github, Eye, Filter, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { projects } from "@/data/portfolio";
@@ -10,7 +10,13 @@ import { Project } from "@/types";
 import { useScrollAnimation } from "@/hooks/useInView";
 import Image from "next/image";
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const ProjectCard = ({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) => {
   const { ref, inView } = useScrollAnimation(0.2);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -79,28 +85,56 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 </span>
               </div>
             )}
+
+            {/* Badge de categoría */}
+            <div className="absolute top-4 left-4">
+              <span
+                className={`px-3 py-1 text-xs font-medium rounded-full ${
+                  project.category === "web"
+                    ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                    : "bg-green-500/20 text-green-400 border border-green-500/30"
+                }`}
+              >
+                {project.category === "web" ? "Web" : "Automatización"}
+              </span>
+            </div>
           </div>
         </div>
 
         <CardContent className="p-6">
-          <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-200">
-            {project.title}
-          </h3>
-          <p className="text-muted-foreground mb-4 line-clamp-3">
+          <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+          <p className="text-muted-foreground mb-4 leading-relaxed">
             {project.description}
           </p>
 
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech: string) => (
-              <motion.span
+              <span
                 key={tech}
-                className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
-                whileHover={{ scale: 1.05 }}
+                className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
               >
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
+
+          {/* Resultados para automatizaciones */}
+          {project.results && project.results.length > 0 && (
+            <div className="mt-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+              <h4 className="text-sm font-medium text-green-400 mb-2 flex items-center">
+                <Zap className="w-4 h-4 mr-1" />
+                Resultados Obtenidos:
+              </h4>
+              <ul className="text-xs text-green-300 space-y-1">
+                {project.results.map((result, idx) => (
+                  <li key={idx} className="flex items-center">
+                    <span className="w-1 h-1 bg-green-400 rounded-full mr-2"></span>
+                    {result}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </CardContent>
 
         <CardFooter className="p-6 pt-0">
@@ -113,7 +147,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 onClick={() => window.open(project.liveUrl, "_blank")}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Ver Demo
+                Ver Proyecto
               </Button>
             )}
             {project.githubUrl && (
@@ -136,21 +170,23 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
 export function Projects() {
   const { ref: sectionRef, inView: sectionInView } = useScrollAnimation(0.1);
-  const [filter, setFilter] = useState("all");
-  const [showFilters, setShowFilters] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<
+    "all" | "web" | "automation"
+  >("all");
 
-  const filteredProjects =
-    filter === "all"
-      ? projects
-      : projects.filter((project) => project.featured);
+  const webProjects = projects.filter((project) => project.category === "web");
+  const automationProjects = projects.filter(
+    (project) => project.category === "automation"
+  );
 
-  const filters = [
-    { value: "all", label: "Todos" },
-    { value: "featured", label: "Destacados" },
+  const categories = [
+    { value: "all", label: "Todos", icon: Filter },
+    { value: "web", label: "Proyectos Web", icon: Globe },
+    { value: "automation", label: "Automatizaciones", icon: Zap },
   ];
 
   return (
-    <section id="projects" className="py-20">
+    <section id="projects" className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={sectionRef}
@@ -167,95 +203,119 @@ export function Projects() {
             Cada proyecto representa un desafío único y una solución innovadora.
           </p>
 
-          <div className="flex justify-center mb-8">
-            <motion.div className="relative">
+          {/* Filtros de categoría */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {categories.map((category) => (
               <Button
-                variant="outline"
-                onClick={() => setShowFilters(!showFilters)}
+                key={category.value}
+                variant={
+                  activeCategory === category.value ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() =>
+                  setActiveCategory(
+                    category.value as "all" | "web" | "automation"
+                  )
+                }
                 className="flex items-center space-x-2"
               >
-                <Filter className="w-4 h-4" />
-                <span>Filtrar proyectos</span>
+                <category.icon className="w-4 h-4" />
+                <span>{category.label}</span>
               </Button>
-
-              <AnimatePresence>
-                {showFilters && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full mt-2 left-0 right-0 bg-background border border-border rounded-lg shadow-lg z-10 p-2"
-                  >
-                    {filters.map((filterOption) => (
-                      <button
-                        key={filterOption.value}
-                        onClick={() => {
-                          setFilter(filterOption.value);
-                          setShowFilters(false);
-                        }}
-                        className={`w-full text-left px-3 py-2 rounded-md transition-colors duration-200 ${
-                          filter === filterOption.value
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-secondary"
-                        }`}
-                      >
-                        {filterOption.label}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+            ))}
           </div>
         </motion.div>
 
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ProjectCard project={project} index={index} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Proyectos Web */}
+        {(activeCategory === "all" || activeCategory === "web") && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={sectionInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-16"
+          >
+            <div className="flex items-center mb-8">
+              <Globe className="w-6 h-6 text-blue-500 mr-3" />
+              <h3 className="text-2xl font-bold text-blue-500">
+                Proyectos Web
+              </h3>
+              <div className="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent ml-4"></div>
+            </div>
 
-        {filteredProjects.length === 0 && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence>
+                {webProjects.map((project, index) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    index={index}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Automatizaciones */}
+        {(activeCategory === "all" || activeCategory === "automation") && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={sectionInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mb-16"
+          >
+            <div className="flex items-center mb-8">
+              <Zap className="w-6 h-6 text-green-500 mr-3" />
+              <h3 className="text-2xl font-bold text-green-500">
+                Automatizaciones n8n / Make
+              </h3>
+              <div className="flex-1 h-px bg-gradient-to-r from-green-500/30 to-transparent ml-4"></div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence>
+                {automationProjects.map((project, index) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    index={index}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Mensaje cuando no hay proyectos */}
+        {((activeCategory === "web" && webProjects.length === 0) ||
+          (activeCategory === "automation" &&
+            automationProjects.length === 0)) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
             <p className="text-muted-foreground">
-              No se encontraron proyectos con el filtro seleccionado.
+              No se encontraron proyectos en esta categoría.
             </p>
           </motion.div>
         )}
 
+        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-center mt-12"
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center"
         >
           <Button
             variant="outline"
             size="lg"
-            onClick={() => window.open("https://github.com", "_blank")}
+            onClick={() => window.open("https://github.com/404arias", "_blank")}
             className="group"
           >
-            <Github className="w-5 h-5 mr-2 group-hover:animate-spin" />
-            Ver todos en GitHub
+            <Github className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-200" />
+            Ver más en GitHub
           </Button>
         </motion.div>
       </div>

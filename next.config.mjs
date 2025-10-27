@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {}
-  }
-}
+  // experimental: {
+  //   turbo: {}
+  // }
+};
 
-export default nextConfig
+export default nextConfig;
