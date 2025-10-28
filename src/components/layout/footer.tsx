@@ -71,9 +71,25 @@ export function Footer() {
           className="mt-8 pt-8 border-t border-border/50"
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-muted-foreground text-center md:text-left">
-              © 2025 Portfolio. Todos los derechos reservados.
-            </p>
+            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+              <p className="text-sm text-muted-foreground text-center md:text-left">
+                © 2025 Portfolio. Todos los derechos reservados.
+              </p>
+              <div className="flex space-x-4 text-sm">
+                <a 
+                  href="/privacy" 
+                  className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                >
+                  Política de Privacidad
+                </a>
+                <a 
+                  href="/security" 
+                  className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                >
+                  Términos de Seguridad
+                </a>
+              </div>
+            </div>
 
             <motion.p
               className="text-sm text-muted-foreground flex items-center"
