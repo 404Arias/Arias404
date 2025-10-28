@@ -159,7 +159,7 @@ export default function SecurityTerms() {
               <p><strong>Email General:</strong> mathi.fer069@gmail.com</p>
               <p><strong>Teléfono:</strong> +595 986 281 167</p>
               <p className="text-sm text-red-300 mt-2">
-                <strong>Nota:</strong> Para reportes de seguridad críticos, por favor incluye "SECURITY" en el asunto del email.
+                <strong>Nota:</strong> Para reportes de seguridad críticos, por favor incluye &quot;SECURITY&quot; en el asunto del email.
               </p>
             </div>
           </section>
